@@ -1,0 +1,17 @@
+{
+    "name": "sedalit/jaicp-usedesk-integration",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sedalit\\JaicpUsedeskIntegration\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vladislav Agarkov",
+            "email": "hello.agarkov@gmail.com"
+        }
+    ],
+    "require": {}
+}
