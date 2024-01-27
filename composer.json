@@ -5,7 +5,10 @@
     "autoload": {
         "psr-4": {
             "Sedalit\\JaicpUsedeskIntegration\\": "src/"
-        }
+        },
+        "files": [
+            "app/functions.php"
+        ]
     },
     "authors": [
         {
