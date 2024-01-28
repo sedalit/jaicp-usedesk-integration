@@ -42,4 +42,8 @@ class Request
     public function chatId() {
         return $this->json['chat_id'] ?? false;
     }
+
+    public function platform() {
+        return $this->json['platform'] ?? null;
+    }
 }
