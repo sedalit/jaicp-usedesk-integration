@@ -2,7 +2,7 @@
 
 namespace Sedalit\JaicpUsedeskIntegration\Core\Handlers;
 
-interface RequestHandler {
+interface IRequestHandler {
     public function handleRequest($request);
     public function canHandle();
 }
