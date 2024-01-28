@@ -2,7 +2,7 @@
 
 namespace Sedalit\JaicpUsedeskIntegration\Core\Handlers\Message;
 
-abstract class BaseHanlder {
+abstract class BaseHandler {
     protected $usedeskInterface;
     protected $jaicpInterface;
 
