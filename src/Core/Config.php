@@ -30,7 +30,7 @@ class Config {
     }
 
     public static function operatorGroups($key = null) {
-        return self::config()['usedesk']['operatorGroups'][$key] ? self::config()['usedesk']['operatorGroups'][$key] : self::config()['usedesk']['operatorGroups'];
+        return self::config()['usedesk']['operatorGroups'][$key] ? self::config()['usedesk']['operatorGroups'][$key] : self::config()['usedesk']['operatorGroups']['defaultOperatorGroupID'];
     }
 
     public static function jaicp($key = null) {
