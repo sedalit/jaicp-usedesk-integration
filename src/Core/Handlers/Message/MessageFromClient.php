@@ -2,12 +2,11 @@
 
 namespace Sedalit\JaicpUsedeskIntegration\Core\Handlers\Message;
 
-use Sedalit\JaicpUsedeskIntegration\Core\Config;
 use Sedalit\JaicpUsedeskIntegration\Core\Handlers\IRequestHandler;
 
 class MessageFromClient extends BaseHandler implements IRequestHandler {
     function canHandle() {
-        $isBotAssigned = $this->ticket->assigneeId == Config::usedesk('botUserId');
+        $isBotAssigned = $this->ticket->assigneeId == env()->usedesk('botUserId');
         $isOperatorGroupAssigned = $this->isOperatorGroupAssigned();
         return (request()->chatId() != false && request()->json()['from'] == "client") && ($isBotAssigned == true && $isOperatorGroupAssigned != true);
     }
@@ -20,6 +19,6 @@ class MessageFromClient extends BaseHandler implements IRequestHandler {
     }
 
     protected function isOperatorGroupAssigned() {
-        return $this->ticket->group == Config::operatorGroups('defaultOperatorGroupID') || $this->ticket->group == Config::operatorGroups($this->ticket->channel());
+        return $this->ticket->group == env()->operatorGroups('defaultOperatorGroupID') || $this->ticket->group == env()->operatorGroups($this->ticket->channel());
     }
 }
