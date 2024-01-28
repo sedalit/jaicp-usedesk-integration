@@ -5,6 +5,10 @@ namespace Sedalit\JaicpUsedeskIntegration\Core;
 class Config {
     protected const CONFIG_FILE = "config.json";
 
+    public static function self() {
+        return new static();
+    }
+
     public static function config() {
         return json_decode(file_get_contents(self::CONFIG_FILE), true);
     }
