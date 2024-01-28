@@ -30,4 +30,16 @@ class Request
     public function json(){
         return $this->json;
     }
+
+    public function client() {
+        return $this->json['client'] ?? [];
+    }
+
+    public function ticket() {
+        return $this->json['ticket'] ?? [];
+    }
+
+    public function chatId() {
+        return $this->json['chat_id'] ?? false;
+    }
 }
