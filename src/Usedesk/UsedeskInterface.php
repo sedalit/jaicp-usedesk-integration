@@ -13,7 +13,7 @@ class UsedeskInterface {
         if ($operatorId) {
             $this->operatorId = $operatorId;
         } else {
-            $this->operatorId = "";
+            $this->operatorId = env()->usedesk('botUserId');
         }
 
         $this->chatId = $chatId;
@@ -47,7 +47,7 @@ class UsedeskInterface {
             [
                 'ticket_id' => $this->ticketId,
                 'group_id' => $operatorGroupId,
-                'user_id' => ""
+                'user_id' => env()->usedesk('botUserId'),
             ]
         );
     }
@@ -58,7 +58,7 @@ class UsedeskInterface {
         if ($wasTransitionToOperator) {
             $this->switchOperatorGroup($this->operatorGroup());
         } else {
-            $this->switchOperator($_ENV['default_operator_id']);
+            $this->switchOperator(env()->usedesk('botUserId'));
         }
 
         $sendMessageResult = $this->sendMessageToUsedesk($data['bot_answer'] ?? []);
@@ -74,7 +74,7 @@ class UsedeskInterface {
             $requestData = new UsedeskApiRequestData([
                 [
                     'chat_id' => $this->chatId,
-                    'user_id'=> $_ENV['default_operator_id'],
+                    'user_id'=> $this->operatorId,
                     'text' => $message['text']
                 ]
             ]);
@@ -91,7 +91,7 @@ class UsedeskInterface {
         foreach ($curlFiles as $file) {
             $requestData = new UsedeskApiRequestData([
                 'ticket_id' => $this->ticketId,
-                'user_id'=> $_ENV['default_operator_id'],
+                'user_id'=> $this->operatorId,
                 'message' => "Файл:",
                 'type' => 'public',
                 'files[]' => $file,
@@ -130,7 +130,9 @@ class UsedeskInterface {
     }
 
     protected function operatorGroup() {
-        return "";
+        $channel = $this->usedeskChannel;
+        $operatorGroup = env()->operatorGroups($channel);
+        return $operatorGroup;
     }
 
     protected function setUsedeskChannel($channelId) {
