@@ -13,7 +13,10 @@ class MessageFromClient extends BaseHandler implements IRequestHandler {
     }
 
     function handleRequest($request) {
-        return 'Procceed';
+        $answerFromBot = $this->jaicpInterface->sendMessage();
+        $usedeskRequestResult = $this->usedeskInterface->sendMessage($answerFromBot);
+
+        return compact($answerFromBot, $usedeskRequestResult);
     }
 
     protected function isOperatorGroupAssigned() {
