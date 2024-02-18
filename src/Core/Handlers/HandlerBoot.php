@@ -9,9 +9,16 @@ class HandlerBoot {
         'message' => [
             MessageFromClient::class,
         ],
+        'trigger' => []
     ];
 
-    public function boot() {
-        return $this->boot;
+    public function boot($ticket, $usedeskClient) {
+        $handlers = ['message' => [], 'trigger' => []];
+        foreach ($this->boot as $key => $value) {
+            foreach ($value as $handler) {
+                $handlers[$key][] = new $handler($ticket, $usedeskClient);
+            }
+        }
+        return $handlers;
     }
 }
