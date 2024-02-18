@@ -9,22 +9,22 @@ class UsedeskInterface {
     protected $platform;
     protected $usedeskChannel;
 
-    function __construct($operatorId, $chatId, $ticketId, $platform, $usedeskChannelId){
-        if ($operatorId) {
-            $this->operatorId = $operatorId;
+    function __construct(Ticket $ticket, $chatId){
+        if ($ticket->assigneeId()) {
+            $this->operatorId = $ticket->assigneeId();
         } else {
             $this->operatorId = env()->usedesk('botUserId');
         }
 
         $this->chatId = $chatId;
-        $this->ticketId = $ticketId;
-        $this->platform = $platform;
-        $this->setUsedeskChannel($usedeskChannelId);
+        $this->ticketId = $ticket->id();
+        $this->platform = $ticket->platform();
+        $this->setUsedeskChannel($ticket->channelId());
     }
 
     public function updateTicket($ticketData) {
         $requestData = new UsedeskApiRequestData($ticketData);
-        $request = new UsedeskApiRequest('https://api.usedesk.ru/update/ticket', [], $requestData);
+        $request = new UsedeskApiRequest('https://api.usedesk.ru/update/ticket', $requestData);
 
         return $request->make();
     }
@@ -37,7 +37,7 @@ class UsedeskInterface {
             'chat_id' => $this->chatId,
             'user_id' => $this->operatorId 
         ]);
-        $request = new UsedeskApiRequest('https://api.usedesk.ru/chat/changeAssignee', [], $requestData);
+        $request = new UsedeskApiRequest('https://api.usedesk.ru/chat/changeAssignee', $requestData);
 
         return $request->make();
     }
@@ -52,8 +52,8 @@ class UsedeskInterface {
         );
     }
 
-    public function sendMessage($data) {
-        $wasTransitionToOperator = $this->wasTransitionToOperator($data['bot_answer']);
+    public function sendMessage($answerData) {
+        $wasTransitionToOperator = $this->wasTransitionToOperator($answerData['data']['replies']);
 
         if ($wasTransitionToOperator) {
             $this->switchOperatorGroup($this->operatorGroup());
@@ -61,8 +61,8 @@ class UsedeskInterface {
             $this->switchOperator(env()->usedesk('botUserId'));
         }
 
-        $sendMessageResult = $this->sendMessageToUsedesk($data['bot_answer'] ?? []);
-        $sendFilesResult = $this->sendFilesToUsedesk($data['files'] ?? []);
+        $sendMessageResult = $this->sendMessageToUsedesk($answerData['data']['replies'] ?? []);
+        $sendFilesResult = $this->sendFilesToUsedesk($answerData['files'] ?? []);
 
         return ['messages' => $sendMessageResult, 'files' => $sendFilesResult, 'wasTransition' => $wasTransitionToOperator];
     }
@@ -73,13 +73,14 @@ class UsedeskInterface {
         foreach ($messages as $message) {
             $requestData = new UsedeskApiRequestData([
                 [
-                    'chat_id' => $this->chatId,
+                    'ticket_id' => $this->ticketId,
                     'user_id'=> $this->operatorId,
-                    'text' => $message['text']
+                    'message' => $message['text'],
+                    'type' => 'public',
+                    'from' => 'user'
                 ]
             ]);
-            $request = new UsedeskApiRequest('https://api.usedesk.ru/chat/sendMessage', [], $requestData);
-            $result[] = $request->make();
+            $result[] = $this->createComment($requestData);
         }
 
         return $result;
@@ -97,12 +98,16 @@ class UsedeskInterface {
                 'files[]' => $file,
                 'from' => 'user'
             ]);
-            $request = new UsedeskApiRequest('https://api.usedesk.ru/create/comment', [], $requestData);
-
-            $result[] = $request->make();
+            
+            $result[] = $this->createComment($requestData);
         }
 
         return $result;
+    }
+
+    protected function createComment(UsedeskApiRequestData $requestData) {
+        $request = new UsedeskApiRequest('https://api.usedesk.ru/create/comment', $requestData);
+        return $request->make();
     }
 
     protected function prepareFiles($files) {
