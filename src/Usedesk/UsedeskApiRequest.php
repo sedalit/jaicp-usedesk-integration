@@ -6,20 +6,24 @@ use Sedalit\JaicpUsedeskIntegration\Core\ApiRequest;
 class UsedeskApiRequest extends ApiRequest {
     protected $requestData;
 
-    function __construct($url, $settings = [], $requestData){
+    function __construct($url, $requestData, $settings = []){
         $this->url = $url;
-        $this->settings = $settings;
         $this->requestData = $requestData;
+        $this->settings = $this->setSettings($settings);
     }
 
-    protected function getSettings() {
+    public function getSettings() {
+        return $this->settings;
+    }
+
+    protected function setSettings($settings) {
         $data = [
-            'api_token' => $_ENV['usedesk_api_key'],
+            'api_token' => env()->tokens('usedeskApiToken'),
         ];
 
         $requestData = $this->requestData->get();
 
-        $data = array_merge($data, $requestData);
+        $data = $data + $requestData[0];
 
         return [
             CURLOPT_URL => $this->url,
