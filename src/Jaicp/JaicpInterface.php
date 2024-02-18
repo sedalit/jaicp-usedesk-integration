@@ -11,8 +11,8 @@ class JaicpInterface {
     function __construct($clientId, $query, $data){
         $this->apiRequestData = new JaicpApiRequestData($clientId, $query, $data);
 
-        $chatApiToken = "";
-        $hostUrl = "";
+        $chatApiToken = env()->tokens('chatApiToken');
+        $hostUrl = env()->jaicp('host');
         $this->apiRequest = new JaicpApiRequest($hostUrl . self::SEND_MESSAGE_METHOD . $chatApiToken, $this->apiRequestData);
     }
 
