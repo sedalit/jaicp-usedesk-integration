@@ -27,31 +27,35 @@ class Handler {
         if (isset($this->handlers['message'])){
             $result = [];
             foreach ($this->handlers['message'] as $handler) {
-                if (call_user_func_array([$handler, 'canHandle'], [1,2])) {
-                    $result[] = call_user_func_array([$handler, 'handleRequest'], [request()]);
+                if (call_user_func_array([$handler, 'canHandle'], [])) {
+                    $result[$handler] = call_user_func_array([$handler, 'handleRequest'], [request()]);
+                } else {
+                    $result[$handler] = "Can't handle";
                 }
             }
  
             return $result;
         }
-        
-        
+        return "No handlers booted";
     }
 
     protected function handleTrigger() {
         if (isset($this->handlers['trigger'])){
             $result = [];
             foreach ($this->handlers['trigger'] as $handler) {
-                if (call_user_func_array([$handler, 'canHandle'], [1,2])) {
-                    $result[] = call_user_func_array([$handler, 'handleRequest'], [request()]);
+                if (call_user_func_array([$handler, 'canHandle'], [])) {
+                    $result[$handler] = call_user_func_array([$handler, 'handleRequest'], [request()]);
+                } else {
+                    $result[$handler] = "Can't handle";
                 }
             }
 
             return $result;
         }
+        return "No handlers booted";
     }
 
     protected function initHandlers() {
-        $this->handlers = $this->handlerBooter->boot();
+        $this->handlers = $this->handlerBooter->boot($this->ticket, $this->usedeskClient);
     }
 }
