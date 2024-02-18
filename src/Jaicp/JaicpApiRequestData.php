@@ -14,14 +14,16 @@ class JaicpApiRequestData {
     }
 
     public function get(){
-        return [
+        $return = [
             'clientId' => $this->clientId,
-            'query' => $this->query,
-            'data' => $this->data
+            'query' => $this->query
         ];
+        if (!empty($this->data)) $return['data'] = $this->data;
+
+        return json_encode($return);
     }
 
     public function json(){
-        return json_encode($this->get());
+        return json_encode([$this->get()]);
     }
 }
