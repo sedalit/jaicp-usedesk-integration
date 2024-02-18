@@ -19,6 +19,6 @@ class Integration {
     }
 
     public function handle() {
-        $this->handler->handle();
+        return $this->handler->handle();
     }
 }
