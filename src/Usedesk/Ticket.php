@@ -4,15 +4,15 @@ namespace Sedalit\JaicpUsedeskIntegration\Usedesk;
 
 class Ticket {
     protected $id;
-    protected $statusId;
+    protected $status_id;
     protected $subject;
-    protected $clientId;
-    protected $assigneeId;
-    protected $groupId;
+    protected $client_id;
+    protected $assignee_id;
+    protected $group_id;
     protected $message;
     protected $files = [];
     protected $platform;
-    protected $channelId;
+    protected $channel_id;
 
     function __construct($data) {
         foreach ($data as $key => $value) {
@@ -38,5 +38,33 @@ class Ticket {
 
     public function channel() {
         return "";
+    }
+
+    public function id() {
+        return $this->id;
+    }
+
+    public function statusId() {
+        return $this->status_id;
+    }
+
+    public function subject() {
+        return $this->subject;
+    }
+
+    public function assigneeId() {
+        return $this->assignee_id;
+    }
+
+    public function groupId() {
+        return $this->group_id;
+    }
+
+    public function files() {
+        return $this->files;
+    }
+
+    public function channelId() {
+        return $this->channel_id;
     }
 }
