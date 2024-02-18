@@ -16,15 +16,12 @@ abstract class ApiRequest {
 
     public function make() {
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         foreach ($this->settings as $key => $value){
             curl_setopt($curl, $key, $value);
         }
-
         $response = curl_exec($curl);
         curl_close($curl);
-
         $this->response = json_decode($response, true);
 
         return $this->response;
