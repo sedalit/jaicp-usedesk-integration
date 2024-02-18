@@ -7,5 +7,6 @@ use Sedalit\JaicpUsedeskIntegration\Http\Request;
 $request = new Request();
 
 $integration = new Integration();
+$result = $integration->handle();
 
-return $integration->handle();
+return $result;
