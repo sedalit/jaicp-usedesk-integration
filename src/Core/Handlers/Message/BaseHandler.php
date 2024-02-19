@@ -18,7 +18,7 @@ abstract class BaseHandler {
         $this->ticket = $ticket;
         $this->usedeskClient = $usedeskClient;
 
-        $this->usedeskInterface = new UsedeskInterface($ticket, '0');
+        $this->usedeskInterface = new UsedeskInterface($ticket, request()->json['chat_id']);
         $this->jaicpInterface = new JaicpInterface($ticket->id(), $ticket->message(), []);
 
         return $this;
