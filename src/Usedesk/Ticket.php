@@ -61,7 +61,7 @@ class Ticket {
     }
 
     public function files() {
-        return $this->files;
+        return ['files' => $this->files];
     }
 
     public function channelId() {

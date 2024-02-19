@@ -12,6 +12,11 @@ class MessageFromClient extends BaseHandler implements IRequestHandler {
     }
 
     function handleRequest($request) {
+        if ($this->ticket->hasFiles()) {
+            $this->jaicpInterface->setData($this->ticket->files());
+            $this->jaicpInterface->setEvent('fileEvent');
+        }
+        
         $answerFromBot = $this->jaicpInterface->sendMessage();
         $usedeskRequestResult = $this->usedeskInterface->sendMessage($answerFromBot);
         return compact($answerFromBot, $usedeskRequestResult);
