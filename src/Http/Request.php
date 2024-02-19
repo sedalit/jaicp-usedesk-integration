@@ -1,6 +1,8 @@
 <?php
 namespace Sedalit\JaicpUsedeskIntegration\Http;
 
+use Sedalit\JaicpUsedeskIntegration\Core\Logger;
+
 class Request
 {
     /**
@@ -19,6 +21,7 @@ class Request
 
     public function __construct(){
         $this->json = json_decode(file_get_contents("php://input"), true);
+        Logger::log('recieved', $this->json);
         if (self::$instance == null) self::$instance = $this;
     }
 
