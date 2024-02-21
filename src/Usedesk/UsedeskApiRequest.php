@@ -7,7 +7,7 @@ class UsedeskApiRequest extends ApiRequest {
     protected $requestData;
 
     function __construct($url, $requestData, $settings = []){
-        $this->url = $url;
+        $this->url = UsedeskInterface::USEDESK_HOST . $url;
         $this->requestData = $requestData;
         $this->settings = $this->setSettings($settings);
     }

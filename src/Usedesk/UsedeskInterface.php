@@ -3,6 +3,10 @@
 namespace Sedalit\JaicpUsedeskIntegration\Usedesk;
 
 class UsedeskInterface {
+    public const USEDESK_HOST = 'https://api.usedesk.ru';
+    protected const UPDATE_TICKET_METHOD = '/update/ticket';
+    protected const CHANGE_ASSIGNEE_METHOD = '/chat/changeAssignee';
+    protected const CREATE_COMMENT_METHOD = '/create/comment';
     protected $operatorId;
     protected $chatId;
     protected $ticketId;
@@ -24,7 +28,7 @@ class UsedeskInterface {
 
     public function updateTicket($ticketData) {
         $requestData = new UsedeskApiRequestData($ticketData);
-        $request = new UsedeskApiRequest('https://api.usedesk.ru/update/ticket', $requestData);
+        $request = new UsedeskApiRequest(self::UPDATE_TICKET_METHOD, $requestData);
 
         return $request->make();
     }
@@ -37,7 +41,7 @@ class UsedeskInterface {
             'chat_id' => $this->chatId,
             'user_id' => $this->operatorId 
         ]);
-        $request = new UsedeskApiRequest('https://api.usedesk.ru/chat/changeAssignee', $requestData);
+        $request = new UsedeskApiRequest(self::CHANGE_ASSIGNEE_METHOD, $requestData);
 
         return $request->make();
     }
@@ -106,7 +110,7 @@ class UsedeskInterface {
     }
 
     protected function createComment(UsedeskApiRequestData $requestData) {
-        $request = new UsedeskApiRequest('https://api.usedesk.ru/create/comment', $requestData);
+        $request = new UsedeskApiRequest(self::CREATE_COMMENT_METHOD, $requestData);
         return $request->make();
     }
 
