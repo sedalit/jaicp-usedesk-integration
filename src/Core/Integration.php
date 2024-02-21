@@ -9,6 +9,7 @@ class Integration {
     protected $ticket;
     protected $usedeskClient;
     protected $handler;
+    protected $exceptionHandler;
 
     function __construct() {
         $request = request();
@@ -16,6 +17,7 @@ class Integration {
         $this->usedeskClient = new Client($request->client());
         $this->ticket = new Ticket($request->ticket());
         $this->handler = new Handler($this->usedeskClient, $this->ticket);
+        $this->exceptionHandler = new ExceptionHandler($this);
     }
 
     public function handle() {
