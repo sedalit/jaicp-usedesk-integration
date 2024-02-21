@@ -24,6 +24,5 @@ class ExceptionHandler {
     public function handleException(\Throwable $e)
     {
         Logger::log('errors', $e);
-        die();
     }
 }
