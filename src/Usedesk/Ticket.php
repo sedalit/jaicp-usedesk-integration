@@ -8,7 +8,7 @@ class Ticket {
     protected $subject;
     protected $client_id;
     protected $assignee_id;
-    protected $group_id;
+    protected $group;
     protected $message;
     protected $files = [];
     protected $platform;
@@ -57,7 +57,7 @@ class Ticket {
     }
 
     public function groupId() {
-        return $this->group_id;
+        return $this->group;
     }
 
     public function files() {
@@ -65,6 +65,6 @@ class Ticket {
     }
 
     public function channelId() {
-        return $this->channel_id;
+        return $this->channel_id ?? "";
     }
 }
