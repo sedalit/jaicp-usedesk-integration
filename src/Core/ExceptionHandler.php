@@ -23,6 +23,6 @@ class ExceptionHandler {
 
     public function handleException(\Throwable $e)
     {
-        Logger::log('errors', $e);
+        Logger::log('errors', ["Request:" => request()->json(), "Error:" => $e]);
     }
 }
