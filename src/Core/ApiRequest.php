@@ -3,18 +3,39 @@
 namespace Sedalit\JaicpUsedeskIntegration\Core;
 
 abstract class ApiRequest {
+    /**
+     * @var string URL, к которому необходимо выполнить запрос
+     */
     protected $url;
+
+    /**
+     * @var array Дополнительные поля, которые нужно отправить вместе с запросом
+     */
     protected $settings;
+
+    /**
+     * @var mixed Ответ, полученный после выполнения запроса
+     */
     public $response;
 
-    function __construct($url, $settings = []){
+    function __construct($url, $settings = [])
+    {
         $this->url = $url;
         $this->settings = $settings;
     }
 
-    protected abstract function getSettings();
+    /**
+     * Функция, возвращающая все установленные поля, которые необходимо отправить вместе с запросом
+     * @return array
+     */
+    protected abstract function getSettings() : array;
 
-    public function make() {
+    /**
+     * Функция, выполняющая запрос к установленному URL
+     * @return array Результат запроса
+     */
+    public function make() 
+    {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         foreach ($this->settings as $key => $value){
@@ -28,7 +49,8 @@ abstract class ApiRequest {
         return $this->response;
     }
 
-    protected function setSettings($settings){
+    protected function setSettings(array $settings) : void
+    {
         $this->settings = $settings;
     }
 }

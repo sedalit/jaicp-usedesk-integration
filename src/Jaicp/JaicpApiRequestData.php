@@ -3,18 +3,40 @@
 namespace Sedalit\JaicpUsedeskIntegration\Jaicp;
 
 class JaicpApiRequestData {
+
+    /**
+     * @var int ID клиента
+     */
     protected $clientId;
+
+    /**
+     * @var string Текущее сообщение клиента к боту
+     */
     protected $query;
+
+    /**
+     * @var array Массив дополнительных данных, которые нужно передать боту
+     */
     protected $data = [];
+
+    /**
+     * @var string Событие в боте, которое должно вызвать сообщение клиента
+     */
     protected $event;
 
-    function __construct($clientId, $query, $data = []) {
+    function __construct(int $clientId, string $query, array $data = []) 
+    {
         $this->clientId = $clientId;
         $this->query = $query;
         $this->data = $data;
     }
 
-    public function get(){
+    /**
+     * Функция, возвращающая все предустановленные данные для отправки в бота
+     * @return string JSON с данными
+     */
+    public function get() : string
+    {
         $return = [
             'clientId' => $this->clientId
         ];
@@ -25,16 +47,14 @@ class JaicpApiRequestData {
         return json_encode($return);
     }
 
-    public function setEvent(string $event) {
+    public function setEvent(string $event) 
+    {
         unset($this->query);
         $this->event = $event;
     }
 
-    public function setData(array $data) {
+    public function setData(array $data) 
+    {
         $this->data = $data;
-    }
-
-    public function json(){
-        return json_encode([$this->get()]);
     }
 }

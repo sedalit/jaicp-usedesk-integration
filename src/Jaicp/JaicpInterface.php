@@ -4,23 +4,43 @@ namespace Sedalit\JaicpUsedeskIntegration\Jaicp;
 
 class JaicpInterface {
     protected const SEND_MESSAGE_METHOD = "/chatadapter/chatapi/";
+
+    /**
+     * @var mixed Ответ, полученный от бота
+     */
     public $botAnswer;
+
+    /**
+     * @var JaicpApiRequest Сформированнный запрос к API JAICP
+     */
     protected $apiRequest;
+
+    /**
+     * @var JaicpApiRequestData Объект, хранящий данные для отправки к боту
+     */
     protected $apiRequestData;
 
-    function __construct($clientId, $query, $data){
+    function __construct(int $clientId, string $query, array $data)
+    {
         $this->apiRequestData = new JaicpApiRequestData($clientId, $query, $data);
     }
 
-    public function setData(array $data) {
+    public function setData(array $data) 
+    {
         $this->apiRequestData->setData($data);
     }
 
-    public function setEvent(string $event) {
+    public function setEvent(string $event) 
+    {
         $this->apiRequestData->setEvent($event);
     }
 
-    public function sendMessage() {
+    /**
+     * Функция отправки сообщения в бота
+     * @return array Ответ, полученный от бота
+     */
+    public function sendMessage() : array
+    {
         $chatApiToken = env()->tokens('chatApiToken');
         $hostUrl = env()->jaicp('host');
         
