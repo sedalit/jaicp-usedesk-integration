@@ -1,0 +1,14 @@
+<?php
+
+if (!file_exists('logs')) mkdir('logs');
+chdir('logs');
+
+$catalogsToCreate = ["errors", "received", "handled"];
+
+foreach ($catalogsToCreate as $catalog) {
+    if (!file_exists($catalog)) {
+        mkdir($catalog);
+    }
+}
+
+echo "Ready!";
